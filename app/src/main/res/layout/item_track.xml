@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="track"
+            type="paf.songrecorder.models.Track" />
+    </data>
+
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="88dp"
+    android:id="@+id/root_list_item"
+    android:background="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/trackDateImage"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/ic_event_white_24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_event_white_24dp"/>
+
+    <TextView
+        android:id="@+id/trackTitleText"
+        style="@style/Text.Primary"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/songDateImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@{track.title}"
+        tools:text="Track #1" />
+
+    <TextView
+        android:id="@+id/trackDateText"
+        style="@style/Text.Secondary"
+        android:layout_width="134dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="44dp"
+        android:text="@{track.date}"
+        app:layout_constraintStart_toEndOf="@+id/trackDateImage"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2:43AM 09/7/2018" />
+</android.support.constraint.ConstraintLayout>
+</layout>
