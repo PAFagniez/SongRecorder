@@ -1,17 +1,19 @@
 package paf.songrecorder.models
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Song(var title: String,
                 var date: String?,
 //                var image: ImageView,
                 var songFolder: String,
                 var trackList: ArrayList<Track> = ArrayList()
 //                var tracks: MutableLiveData<List<Track>> = MutableLiveData()
-)
-    : Serializable {
+    ) : Parcelable {
 
     fun addTrack(track: Track) {
         trackList.add(track)
     }
+
 }

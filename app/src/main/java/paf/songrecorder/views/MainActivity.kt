@@ -16,7 +16,6 @@ import paf.songrecorder.helpers.DateHelper
 import paf.songrecorder.helpers.FileHelper
 import paf.songrecorder.helpers.SongHelper
 import paf.songrecorder.models.Song
-import paf.songrecorder.viewmodels.SongModel
 import paf.songrecorder.views.adapters.SongAdapter
 import java.io.File
 
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity(){
 
     private lateinit var songList : ArrayList<Song>
     private var adapter: SongAdapter? = null
-    private lateinit var songModel: SongModel
     private lateinit var newSongDialog: AlertDialog
 
     private val path: File = Environment.getDataDirectory()
@@ -62,7 +60,7 @@ class MainActivity : AppCompatActivity(){
         songListView.layoutManager = LinearLayoutManager(this)
 
         adapter = SongAdapter(
-                songList = SongHelper.getSongModelList(APP_FOLDER_NAME)
+                songList = SongHelper.getSongList(APP_FOLDER_NAME)
         )
         songListView.adapter = adapter
     }
@@ -71,7 +69,7 @@ class MainActivity : AppCompatActivity(){
         val li = LayoutInflater.from(this)
         val dialogView = li.inflate(R.layout.text_edit_dialog, null)
 
-        val currentDateTime = DateHelper.getCurrentDateAndTimeAsString()
+        val currentDateTime = DateHelper.getCurrentDateAndTimeForNameAsString()
 
         val defaultName = "audioTrack_$currentDateTime"
         var songTitle : String
@@ -91,11 +89,11 @@ class MainActivity : AppCompatActivity(){
 
                     val newSongIntent = Intent(this, SongActivity::class.java)
                     val song = Song(songTitle, null, "$APP_FOLDER_NAME$songTitle/")
-                    val songModel = SongModel(song)
-                    val folderCreationCode = FileHelper.createNewSongFolder(songModel)
+
+                    val folderCreationCode = FileHelper.createNewSongFolder(song)
 
                     if(folderCreationCode == FileHelper.FOLDER_CREATED) {
-                        newSongIntent.putExtra(SONG, songModel)
+                        newSongIntent.putExtra(SONG, song)
                         Toast.makeText(applicationContext, "Creating $songTitle",
                                 Toast.LENGTH_LONG).show()
                         startActivityForResult(newSongIntent, ADDED_SONG_CODE)
@@ -131,7 +129,7 @@ class MainActivity : AppCompatActivity(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == ADDED_SONG_CODE && resultCode == Activity.RESULT_OK){
-            val updatedSongList = data?.extras?.get(SONG_LIST) as ArrayList<SongModel>
+            val updatedSongList = data?.extras?.getParcelableArrayList<Song>(SONG_LIST) as ArrayList<Song>
             adapter?.update(updatedSongList)
         }
     }

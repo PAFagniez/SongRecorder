@@ -4,14 +4,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import paf.songrecorder.databinding.SongBinding
-import paf.songrecorder.viewmodels.SongModel
+import paf.songrecorder.models.Song
 import paf.songrecorder.views.viewholders.SongBindingViewHolder
 
 
 
 
 
-class SongAdapter(private var songList: ArrayList<SongModel>) : RecyclerView.Adapter<SongBindingViewHolder>(){
+class SongAdapter(private var songList: ArrayList<Song>) : RecyclerView.Adapter<SongBindingViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongBindingViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -29,15 +29,9 @@ class SongAdapter(private var songList: ArrayList<SongModel>) : RecyclerView.Ada
         holder.bind(currentSong)
     }
 
-    fun update(songs: ArrayList<SongModel>) {
+    fun update(songs: ArrayList<Song>) {
         songList.clear()
         songList.addAll(songs)
-        notifyDataSetChanged()
-    }
-
-    fun setData(songModelList: ArrayList<SongModel>) {
-        this.songList.clear()
-        songList.addAll(songModelList)
         notifyDataSetChanged()
     }
 }

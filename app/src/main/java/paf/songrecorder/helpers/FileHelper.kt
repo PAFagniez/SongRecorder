@@ -2,7 +2,7 @@ package paf.songrecorder.helpers
 
 import android.os.Environment
 import android.util.Log
-import paf.songrecorder.viewmodels.SongModel
+import paf.songrecorder.models.Song
 import java.io.File
 import java.io.IOException
 
@@ -79,7 +79,7 @@ class FileHelper {
             }
         }
 
-        fun createNewSongFolder(songModel: SongModel): Int {
+        fun createNewSongFolder(songModel: Song): Int {
             val folder = File(appFolder.absolutePath + "/${songModel.title}")
             try {
                 return if(appFolder.isDirectory && !folder.isDirectory) {

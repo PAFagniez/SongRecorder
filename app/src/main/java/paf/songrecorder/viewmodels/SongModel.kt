@@ -6,9 +6,8 @@ import paf.songrecorder.BR
 import paf.songrecorder.helpers.DateHelper
 import paf.songrecorder.models.Song
 import paf.songrecorder.models.Track
-import java.io.Serializable
 
-class SongModel(val song: Song): BaseObservable(), Serializable {
+class SongModel(val song: Song): BaseObservable() {
 
     @Bindable
     var title = song.title

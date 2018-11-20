@@ -14,17 +14,17 @@ class TrackHelper(var song: Song): ViewModel() {
 
     companion object {
 
-        private fun createTrackList(song: Song) : ArrayList<Track>{
-            val trackFolderList = FileHelper
+        fun createTrackList(song: Song) : ArrayList<Track>{
+            val audioFileList = FileHelper
                     .getAudioFileListFromDirectorySortedByLastModified(song.songFolder)
             val trackList = ArrayList<Track>()
 
-            trackFolderList?.forEach { trackFolder ->
+            audioFileList?.forEach { audioFile ->
                 val track = Track(
-                        trackFolder.name,
-                        trackFolder.lastModified().toString(),
-                        null,
-                        File("$song.songFolder/${trackFolder.name}")
+                        audioFile.name,
+                        audioFile.lastModified().toString(),
+                        audioFile.parent,
+                        File(audioFile.absolutePath)
                 )
 
                 trackList.add(track)
@@ -33,7 +33,7 @@ class TrackHelper(var song: Song): ViewModel() {
             return trackList
         }
 
-        private fun createTrackModelList(songModel: SongModel) : ArrayList<TrackModel> {
+        fun createTrackModelList(songModel: SongModel) : ArrayList<TrackModel> {
             val trackFolderList = FileHelper
                     .getAudioFileListFromDirectorySortedByLastModified(songModel.songFolder)
             val trackModelList = ArrayList<TrackModel>()
@@ -50,17 +50,6 @@ class TrackHelper(var song: Song): ViewModel() {
             }
 
             return trackModelList
-        }
-
-        fun getListOfTrackModels(song: SongModel) : ArrayList<TrackModel>{
-
-            val trackModelList = createTrackModelList(song)
-            return trackModelList
-        }
-
-        fun getListOfTracks(song: Song) : ArrayList<Track>{
-            val trackList: ArrayList<Track> = createTrackList(song)
-            return trackList
         }
     }
 }

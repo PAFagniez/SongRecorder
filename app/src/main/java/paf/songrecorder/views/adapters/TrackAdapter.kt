@@ -4,10 +4,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import paf.songrecorder.databinding.TrackBinding
+import paf.songrecorder.models.Track
 import paf.songrecorder.viewmodels.TrackModel
 import paf.songrecorder.views.viewholders.TrackBindingViewHolder
 
-class TrackAdapter(private var trackList: ArrayList<TrackModel>) : RecyclerView.Adapter<TrackBindingViewHolder>(){
+class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapter<TrackBindingViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackBindingViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,7 +26,7 @@ class TrackAdapter(private var trackList: ArrayList<TrackModel>) : RecyclerView.
         holder.bind(currentTrack)
     }
 
-    fun update(tracks: ArrayList<TrackModel>) {
+    fun update(tracks: ArrayList<Track>) {
         trackList.clear()
         trackList.addAll(tracks)
         notifyDataSetChanged()

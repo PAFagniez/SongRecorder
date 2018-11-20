@@ -32,8 +32,8 @@ class SongRecorderController(){
     }
 
     fun stopRecorder() {
-            recorder.stop()
-            recorder.release()
+        recorder.stop()
+        recorder.release()
     }
 
 }

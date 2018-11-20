@@ -4,13 +4,13 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import paf.songrecorder.databinding.TrackBinding
+import paf.songrecorder.models.Track
 import paf.songrecorder.viewmodels.SongPlayerController
-import paf.songrecorder.viewmodels.TrackModel
 
 class TrackBindingViewHolder(private val binding: TrackBinding):
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
-    private lateinit var trackModel: TrackModel
+    private lateinit var track: Track
 
     init {
         itemView.setOnClickListener(this)
@@ -19,12 +19,12 @@ class TrackBindingViewHolder(private val binding: TrackBinding):
     override fun onClick(view: View?) {
         Log.d("RecyclerView", "CLICK!")
         val songPlayerViewModel = SongPlayerController()
-        songPlayerViewModel.startPlayer(trackModel.audioFile)
+        songPlayerViewModel.startPlayer(track.audioFile)
     }
 
-    fun bind (trackModel: TrackModel) {
-        this.trackModel = trackModel
-        binding.track = trackModel
+    fun bind (track: Track) {
+        this.track = track
+        binding.track = track
         binding.executePendingBindings()
     }
 }

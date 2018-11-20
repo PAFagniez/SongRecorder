@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import paf.songrecorder.databinding.SongBinding
-import paf.songrecorder.viewmodels.SongModel
+import paf.songrecorder.models.Song
 import paf.songrecorder.views.SongActivity
 
 class SongBindingViewHolder(private val binding: SongBinding):
@@ -15,7 +15,7 @@ class SongBindingViewHolder(private val binding: SongBinding):
         private const val SONG_KEY = "SONG"
     }
 
-    private lateinit var songModel: SongModel
+    private lateinit var song: Song
 
     init {
         itemView.setOnClickListener(this)
@@ -25,13 +25,13 @@ class SongBindingViewHolder(private val binding: SongBinding):
         Log.d("RecyclerView", "CLICK!")
         val context = itemView.context
         val editSongIntent = Intent(context, SongActivity::class.java)
-        editSongIntent.putExtra(SONG_KEY, songModel)
+        editSongIntent.putExtra(SONG_KEY, song)
         context.startActivity(editSongIntent)
     }
 
-    fun bind (songModel: SongModel) {
-        this.songModel = songModel
-        binding.song = songModel
+    fun bind (song: Song) {
+        this.song = song
+        binding.song = song
         binding.executePendingBindings()
     }
 

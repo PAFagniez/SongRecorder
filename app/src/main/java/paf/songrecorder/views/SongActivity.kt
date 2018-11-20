@@ -24,14 +24,12 @@ class SongActivity : AppCompatActivity() {
 
     companion object {
         private const val SONG_KEY = "SONG"
-        private const val APP_NAME = "Song Recorder"
         private const val SONG_LIST = "SONG_LIST"
     }
 
     private lateinit var playerController: SongPlayerController
     private lateinit var activitySongBinding: ActivitySongBinding
     private lateinit var song: Song
-    private lateinit var newSongFolder: File
     private lateinit var lastAudioFile: File
     private val songRecorderViewModel = SongRecorderController()
     private lateinit var adapter: TrackAdapter
@@ -42,7 +40,8 @@ class SongActivity : AppCompatActivity() {
 
         activitySongBinding = DataBindingUtil.setContentView(this, R.layout.activity_song)
 
-        songModel = intent.getSerializableExtra(SONG_KEY) as SongModel
+        song = intent.getParcelableExtra(SONG_KEY) as Song
+        songModel = SongModel(song)
 
         stopRecordingBtn.isEnabled = false
         playSongBtn.isEnabled = false
@@ -54,7 +53,7 @@ class SongActivity : AppCompatActivity() {
         }
         stopRecordingBtn.setOnClickListener {
             stopRecording()
-            adapter.update(TrackHelper.getListOfTrackModels(songModel))
+            adapter.update(TrackHelper.createTrackList(song))
         }
         playSongBtn.setOnClickListener {
             playTrack(songModel.title + ".3gp")
@@ -74,7 +73,7 @@ class SongActivity : AppCompatActivity() {
     }
 
     private fun createNewFile() : File{
-        lastAudioFile = File("${songModel.songFolder}/${DateHelper.getCurrentDateAndTimeAsString()}.3gp")
+        lastAudioFile = File("${songModel.songFolder}/${DateHelper.getCurrentDateAndTimeForNameAsString()}.3gp")
         return lastAudioFile
     }
 
@@ -95,29 +94,21 @@ class SongActivity : AppCompatActivity() {
     }
 
     private fun playTrack(songTitle: String) {
-//        val mediaPlayer = MediaPlayer()
         playerController.startPlayer(lastAudioFile)
-//        try {
-//            mediaPlayer.setDataSource(songTitle)
-//            mediaPlayer.prepare()
-//            mediaPlayer.start()
         Toast.makeText(applicationContext, "Playing Audio", Toast.LENGTH_LONG).show()
-//        } catch (e: Exception) {
-//            // make something
-//        }
     }
 
     private fun setUpRecyclerView() {
 
         trackListView.layoutManager = LinearLayoutManager(this)
 
-        adapter = TrackAdapter(TrackHelper.getListOfTrackModels(songModel))
+        adapter = TrackAdapter(TrackHelper.createTrackList(song))
         trackListView.adapter = adapter
     }
 
     override fun finish() {
         val returnIntent = Intent()
-        returnIntent.putExtra(SONG_LIST, SongHelper.getSongModelList(MainActivity.APP_FOLDER_NAME))
+        returnIntent.putParcelableArrayListExtra(SONG_LIST, SongHelper.getSongList(MainActivity.APP_FOLDER_NAME))
         setResult(Activity.RESULT_OK, returnIntent)
         super.finish()
     }
