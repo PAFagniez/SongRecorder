@@ -5,7 +5,7 @@ import android.util.Log
 import java.io.File
 import java.io.IOException
 
-class SongRecorderViewModel(){
+class SongRecorderController(){
 
     private val TAG = "Song Recorder"
 //    var outputFile : String

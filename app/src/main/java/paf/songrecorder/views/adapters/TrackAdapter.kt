@@ -43,7 +43,7 @@ class TrackAdapter(private var trackList: ArrayList<TrackModel>) : RecyclerView.
 //
 //        override fun onClick(view: View?) {
 //            Log.d("RecyclerView", "CLICK!")
-//            val songPlayerViewModel = track!!.audioFile?.let { SongPlayerViewModel(it) }
+//            val songPlayerViewModel = track!!.audioFile?.let { SongPlayerController(it) }
 //            if (songPlayerViewModel != null) {
 //                songPlayerViewModel.startPlayer()
 //            }

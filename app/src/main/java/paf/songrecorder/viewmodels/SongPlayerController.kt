@@ -3,7 +3,7 @@ package paf.songrecorder.viewmodels
 import android.media.MediaPlayer
 import java.io.File
 
-class SongPlayerViewModel{
+class SongPlayerController{
 
     val TAG = "Song Player"
     var player: MediaPlayer = MediaPlayer()

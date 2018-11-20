@@ -15,8 +15,8 @@ import paf.songrecorder.helpers.SongHelper
 import paf.songrecorder.helpers.TrackHelper
 import paf.songrecorder.models.Song
 import paf.songrecorder.viewmodels.SongModel
-import paf.songrecorder.viewmodels.SongPlayerViewModel
-import paf.songrecorder.viewmodels.SongRecorderViewModel
+import paf.songrecorder.viewmodels.SongPlayerController
+import paf.songrecorder.viewmodels.SongRecorderController
 import paf.songrecorder.views.adapters.TrackAdapter
 import java.io.File
 
@@ -28,12 +28,12 @@ class SongActivity : AppCompatActivity() {
         private const val SONG_LIST = "SONG_LIST"
     }
 
-    private lateinit var playerViewModel: SongPlayerViewModel
+    private lateinit var playerController: SongPlayerController
     private lateinit var activitySongBinding: ActivitySongBinding
     private lateinit var song: Song
     private lateinit var newSongFolder: File
     private lateinit var lastAudioFile: File
-    private val songRecorderViewModel = SongRecorderViewModel()
+    private val songRecorderViewModel = SongRecorderController()
     private lateinit var adapter: TrackAdapter
     private lateinit var songModel: SongModel
 
@@ -60,7 +60,7 @@ class SongActivity : AppCompatActivity() {
             playTrack(songModel.title + ".3gp")
         }
 
-        playerViewModel = SongPlayerViewModel()
+        playerController = SongPlayerController()
         activitySongBinding.song = songModel
 
 
@@ -96,7 +96,7 @@ class SongActivity : AppCompatActivity() {
 
     private fun playTrack(songTitle: String) {
 //        val mediaPlayer = MediaPlayer()
-        playerViewModel.startPlayer(lastAudioFile)
+        playerController.startPlayer(lastAudioFile)
 //        try {
 //            mediaPlayer.setDataSource(songTitle)
 //            mediaPlayer.prepare()
@@ -123,7 +123,7 @@ class SongActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        playerViewModel.stopPlayer()
+        playerController.stopPlayer()
         finish()
     }
 
