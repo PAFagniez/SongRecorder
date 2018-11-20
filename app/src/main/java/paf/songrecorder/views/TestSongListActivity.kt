@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.song_list_activity.*
 import paf.songrecorder.R
 import paf.songrecorder.models.Song
-import paf.songrecorder.viewmodels.SongModel
+import paf.songrecorder.helpers.SongHelper
 import paf.songrecorder.views.adapters.TestSongAdapter
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,7 +30,7 @@ class TestSongListActivity : AppCompatActivity() {
 
 //    private var items : ArrayList<ViewType>
     private lateinit var songAdapter: TestSongAdapter
-    private val songController = SongModel(APP_FOLDER_NAME)
+    private val songController = SongHelper(APP_FOLDER_NAME)
     private lateinit var songSubscription: Disposable
     var subscriptions = ArrayCompositeSubscription(1)
 

@@ -1,71 +1,31 @@
 package paf.songrecorder.viewmodels
 
-import io.reactivex.Observable
-import paf.songrecorder.helpers.FileHelper
+import android.databinding.BaseObservable
+import android.databinding.Bindable
+import paf.songrecorder.BR
+import paf.songrecorder.helpers.DateHelper
 import paf.songrecorder.models.Song
+import paf.songrecorder.models.Track
+import java.io.Serializable
 
+class SongModel(val song: Song): BaseObservable(), Serializable {
 
-class SongModel(private var rootFolderPath: String) {
-
-    private var songList: ArrayList<Song> = ArrayList()
-    private lateinit var songListObservable: Observable<List<Song>>
-
-    private fun createSongList() {
-        val songFolderList = FileHelper.getDirectoryListSortedByLastModified(rootFolderPath)
-
-        songFolderList?.forEach { songFolder ->
-            val song = Song(
-                    songFolder.name,
-                    songFolder.lastModified().toString(),
-                    "$rootFolderPath/${songFolder.name}"
-            )
-
-            val trackController = TrackModel(song)
-            song.trackList = trackController.getListOfTracks()
-            songList.add(song)
+    @Bindable
+    var title = song.title
+        set(title) {
+            field = title
+            date = DateHelper.getCurrentDateAndTimeAsString()
+            notifyPropertyChanged(BR.title)
         }
-    }
+    @Bindable
+    var date = song.date
+    //                var image: ImageView,
+    @Bindable
+    var songFolder = song.songFolder
+    @Bindable
+    var trackList = song.trackList
 
-        private fun testCreateSongList(songs: MutableList<Song>) {
-            val songFolderList = FileHelper.getDirectoryListSortedByLastModified(rootFolderPath)
-
-            songFolderList?.forEach { songFolder ->
-                val song = Song(
-                        songFolder.name,
-                        songFolder.lastModified().toString(),
-                        "$rootFolderPath/${songFolder.name}"
-                )
-
-                val trackController = TrackModel(song)
-                song.trackList = trackController.getListOfTracks()
-                songList.add(song)
-                songs.add(song)
-            }
-
-//        songListObservable = Observable.create { emitter: ObservableEmitter<List<Song>> ->
-//            try {
-//                emitter.onNext(songList)
-//            } catch (e: Exception) {
-//                emitter.onError(e)
-//            }
-//        }
-    }
-
-    fun testGetListOfSongs() : Observable<List<Song>> {
-//        SystemClock.sleep(8000)
-//        createSongList()
-//        return songListObservable
-        return Observable.create{
-            subscriber ->
-            val songs = mutableListOf<Song>()
-            testCreateSongList(songs)
-            subscriber.onNext(songs)
-            subscriber.onComplete()
-        }
-    }
-
-    fun getListOfSongs() : ArrayList<Song> {
-        createSongList()
-        return songList
+    fun addNewTrackToTrackList(track: Track){
+        trackList.add(track)
     }
 }

@@ -8,7 +8,7 @@ class DateHelper {
     companion object {
         fun getCurrentDateAndTimeAsString(): String {
 
-            val sdf = SimpleDateFormat("dd-M-yyyy_hhmmss")
+            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
             return sdf.format(Date())
         }
     }

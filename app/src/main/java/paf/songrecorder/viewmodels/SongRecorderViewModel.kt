@@ -14,7 +14,7 @@ class SongRecorderViewModel(){
 
     init {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
     }
 

@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
+    <data class="TrackBinding">
         <variable
             name="track"
-            type="paf.songrecorder.models.Track" />
+            type="paf.songrecorder.viewmodels.TrackModel" />
     </data>
 
 <android.support.constraint.ConstraintLayout

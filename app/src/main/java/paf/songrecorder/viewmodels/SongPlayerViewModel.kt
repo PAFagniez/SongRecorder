@@ -17,12 +17,12 @@ class SongPlayerViewModel{
     }
 
     fun startPlayer(audioFile: File) {
+        if(!player.isPlaying) {
+            player.stop()
+        }
         player.setDataSource(audioFile.absolutePath)
         player.prepare()
         player.start()
-        if(!player.isPlaying){
-            stopPlayer()
-        }
     }
 
     fun stopPlayer() {

@@ -1,15 +1,20 @@
 package paf.songrecorder.views
 
+import android.app.Activity
+import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_song.*
 import paf.songrecorder.R
-import paf.songrecorder.models.Song
+import paf.songrecorder.databinding.ActivitySongBinding
 import paf.songrecorder.helpers.DateHelper
+import paf.songrecorder.helpers.SongHelper
+import paf.songrecorder.helpers.TrackHelper
+import paf.songrecorder.models.Song
+import paf.songrecorder.viewmodels.SongModel
 import paf.songrecorder.viewmodels.SongPlayerViewModel
 import paf.songrecorder.viewmodels.SongRecorderViewModel
 import paf.songrecorder.views.adapters.TrackAdapter
@@ -20,59 +25,45 @@ class SongActivity : AppCompatActivity() {
     companion object {
         private const val SONG_KEY = "SONG"
         private const val APP_NAME = "Song Recorder"
+        private const val SONG_LIST = "SONG_LIST"
     }
 
-    private lateinit var startButton: Button
-    private lateinit var stopButton: Button
-    private lateinit var playButton: Button
     private lateinit var playerViewModel: SongPlayerViewModel
+    private lateinit var activitySongBinding: ActivitySongBinding
     private lateinit var song: Song
     private lateinit var newSongFolder: File
-    private lateinit var outputFile: File
+    private lateinit var lastAudioFile: File
     private val songRecorderViewModel = SongRecorderViewModel()
-    private lateinit var currentDateTime: String
     private lateinit var adapter: TrackAdapter
+    private lateinit var songModel: SongModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_song)
 
-        song = intent.getSerializableExtra(SONG_KEY) as Song
-        startButton = b_startRecording
-        stopButton = b_stopRecording
-        playButton = b_playSong
+        activitySongBinding = DataBindingUtil.setContentView(this, R.layout.activity_song)
 
-        stopButton.isEnabled = false
-        playButton.isEnabled = false
+        songModel = intent.getSerializableExtra(SONG_KEY) as SongModel
+
+        stopRecordingBtn.isEnabled = false
+        playSongBtn.isEnabled = false
 
         setUpRecyclerView()
 
-        var appFolder = File(Environment.getExternalStorageDirectory().toString() + "/$APP_NAME")
-
-        if(appFolder.isDirectory) {
-            newSongFolder = File(appFolder.absolutePath + "/${song.title}")
-            newSongFolder.mkdirs()
-            createFolder(newSongFolder.absolutePath + "/${song.title}.3gp")
-
-        } else {
-            appFolder = File(Environment.getExternalStorageDirectory().toString(), APP_NAME)
-            appFolder.mkdirs()
-            newSongFolder = File(appFolder.absolutePath + "/${song.title}")
-            newSongFolder.mkdirs()
-            createFolder(newSongFolder.absolutePath + "/${song.title}.3gp")
-        }
-
-        startButton.setOnClickListener {
+        startRecordingBtn.setOnClickListener {
             startRecording()
         }
-        stopButton.setOnClickListener {
+        stopRecordingBtn.setOnClickListener {
             stopRecording()
+            adapter.update(TrackHelper.getListOfTrackModels(songModel))
         }
-        playButton.setOnClickListener {
-            playTrack(song.title + ".3gp")
+        playSongBtn.setOnClickListener {
+            playTrack(songModel.title + ".3gp")
         }
 
         playerViewModel = SongPlayerViewModel()
+        activitySongBinding.song = songModel
+
+
     }
 
     fun createFolder(path: String){
@@ -83,27 +74,29 @@ class SongActivity : AppCompatActivity() {
     }
 
     private fun createNewFile() : File{
-        return File(song.songFolder + DateHelper.getCurrentDateAndTimeAsString())
+        lastAudioFile = File("${songModel.songFolder}/${DateHelper.getCurrentDateAndTimeAsString()}.3gp")
+        return lastAudioFile
     }
 
     private fun startRecording() {
         songRecorderViewModel.startRecorder(createNewFile())
-        startButton.isEnabled = false
-        stopButton.isEnabled = true
+        startRecordingBtn.isEnabled = false
+        stopRecordingBtn.isEnabled = true
+        playSongBtn.isEnabled = false
         Toast.makeText(applicationContext, "Recording started, Toast.LENGTH_LONG", Toast.LENGTH_LONG).show()
     }
 
     private fun stopRecording() {
-        startButton.isEnabled = true
-        stopButton.isEnabled = false
-        playButton.isEnabled = true
+        startRecordingBtn.isEnabled = true
+        stopRecordingBtn.isEnabled = false
+        playSongBtn.isEnabled = true
         songRecorderViewModel.stopRecorder()
         Toast.makeText(applicationContext, "Audio Recorder successfully", Toast.LENGTH_LONG).show()
     }
 
     private fun playTrack(songTitle: String) {
 //        val mediaPlayer = MediaPlayer()
-        playerViewModel.startPlayer(outputFile)
+        playerViewModel.startPlayer(lastAudioFile)
 //        try {
 //            mediaPlayer.setDataSource(songTitle)
 //            mediaPlayer.prepare()
@@ -118,8 +111,20 @@ class SongActivity : AppCompatActivity() {
 
         trackListView.layoutManager = LinearLayoutManager(this)
 
-        adapter = TrackAdapter(song.trackList)
+        adapter = TrackAdapter(TrackHelper.getListOfTrackModels(songModel))
         trackListView.adapter = adapter
+    }
+
+    override fun finish() {
+        val returnIntent = Intent()
+        returnIntent.putExtra(SONG_LIST, SongHelper.getSongModelList(MainActivity.APP_FOLDER_NAME))
+        setResult(Activity.RESULT_OK, returnIntent)
+        super.finish()
+    }
+
+    override fun onBackPressed() {
+        playerViewModel.stopPlayer()
+        finish()
     }
 
 }

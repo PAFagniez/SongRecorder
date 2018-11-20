@@ -7,9 +7,9 @@
 //import android.view.View
 //import android.view.ViewGroup
 //import paf.songrecorder.data.Track
-//import paf.songrecorder.viewmoddels.TrackModel
+//import paf.songrecorder.viewmoddels.TrackHelper
 //
-//class TestTrackAdapter(val layoutId: Int, val viewModel: TrackModel):
+//class TestTrackAdapter(val layoutId: Int, val viewModel: TrackHelper):
 //        RecyclerView.Adapter<TestTrackAdapter.GenericViewHolder>() {
 //
 //    private lateinit var tracks: List<Track>
@@ -46,7 +46,7 @@
 //
 //        val itemView = itemView
 //
-//        fun bind(viewModel: TrackModel, position: Int) {
+//        fun bind(viewModel: TrackHelper, position: Int) {
 ////            with(binding)
 //        }
 //
