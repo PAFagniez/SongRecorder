@@ -14,9 +14,11 @@ class SongHelper(private var rootFolderPath: String) {
 
             songFolderList?.forEach { songFolder ->
                 val song = Song(
-                        songFolder.name,
-                        songFolder.lastModified().toString(),
-                        "$rootFolderPath${songFolder.name}"
+                        title = songFolder.name,
+                        date = DateHelper.convertDateToReadableDateAndTime(
+                                songFolder.lastModified()
+                        ),
+                        songFolder = "$rootFolderPath${songFolder.name}"
                 )
 
 //                song.trackList = TrackHelper.getListOfTracks(song)
@@ -31,9 +33,11 @@ class SongHelper(private var rootFolderPath: String) {
 
             songFolderList?.forEach { songFolder ->
                 val song = Song(
-                        songFolder.name,
-                        songFolder.lastModified().toString(),
-                        "$rootFolderPath${songFolder.name}"
+                        title = songFolder.name,
+                        date = DateHelper.convertDateToReadableDateAndTime(
+                                songFolder.lastModified()
+                        ),
+                        songFolder = "$rootFolderPath${songFolder.name}"
                 )
 
 //                song.trackList = TrackHelper.getListOfTracks(song)

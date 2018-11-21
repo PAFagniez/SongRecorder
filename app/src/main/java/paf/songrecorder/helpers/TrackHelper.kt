@@ -22,7 +22,7 @@ class TrackHelper(var song: Song): ViewModel() {
             audioFileList?.forEach { audioFile ->
                 val track = Track(
                         audioFile.name,
-                        audioFile.lastModified().toString(),
+                        DateHelper.convertDateToReadableDateAndTime(audioFile.lastModified()),
                         audioFile.parent,
                         File(audioFile.absolutePath)
                 )
